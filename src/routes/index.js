@@ -1,11 +1,12 @@
 const { Router } = require('express');
+const scrapeRoutes = require('./scrape.routes');
 
 // Importar todos los routers;
-const scrape = require('./scrape');
 
-// Configurar los routers
 const router = Router();
 
-router.use('/scrape', scrape);
+// Configurar los routers
+
+router.use('/scrape', scrapeRoutes);
 
 module.exports = router;
