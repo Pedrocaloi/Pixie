@@ -27,11 +27,11 @@ async function GetExpedientes(juzgado, titular, numeroExpediente, anio) {
    for (let i = 0; i < juzgados.length; i++) {
     const j = juzgados;
     console.log('JUZGADO N° ', i + 1, 'de', j[i]);
-    await buscarSinExpediente(j[i], titular, anio, (check = 2));
+    await busquedaConAño(j[i], titular, anio, (check = 2));
     // let res =
     // response.concat(res);
    }
-   //    buscarSinExpediente(juzgado, titular, anio, (check = 2));
+   //    busquedaConAño(juzgado, titular, anio, (check = 2));
    break;
   case anio === '' || null:
    // Le llega solo n° exp
@@ -39,7 +39,7 @@ async function GetExpedientes(juzgado, titular, numeroExpediente, anio) {
    for (let i = 0; i < juzgados.length; i++) {
     const j = juzgados;
     console.log('JUZGADO N° ', i + 1, 'de', j[i]);
-    await busquedaSinAño(juzgado, titular, numeroExpediente, (check = 3));
+    await busquedaConExp(juzgado, titular, numeroExpediente, (check = 3));
     // let res =
     // response.concat(res);
    }
@@ -103,16 +103,21 @@ async function busquedaSinInfo(juzgado, titular, check) {
  return res;
 }
 
-async function busquedaSinAño(juzgado, titular, numeroExpediente, check) {
+async function busquedaConExp(juzgado, titular, numeroExpediente, check) {
  let res = [];
- for (let index = 0; index < anios.length; index++) {
-  n = anios[index];
-  console.log('año ', n);
+ const n = [];
+ for (let i = 0; i < anios.length; i += 5) {
+  n.push(anios.slice(i, i + 5));
+ }
+ for (let index = 0; index < n.length; index++) {
+  // n = anios[index];
+  console.log('n° exp', numeroExpediente);
+  console.log('años ', n);
   let response = await HacerBusqueda(
    juzgado,
    titular,
    numeroExpediente,
-   n,
+   n[index],
    check,
   );
   res = res.concat(response);
@@ -120,7 +125,7 @@ async function busquedaSinAño(juzgado, titular, numeroExpediente, check) {
  return res;
 }
 
-async function buscarSinExpediente(juzgado, titular, anio, check) {
+async function busquedaConAño(juzgado, titular, anio, check) {
  let res = [];
  for (let i = 1; i < 9999; i++) {
   let a = i.toString().padStart(4, '0');

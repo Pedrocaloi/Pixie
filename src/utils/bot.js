@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 
+// fijarse situaciones de corte de las func
+
 const HacerBusqueda = async (
  juzgados,
  titular,
@@ -53,9 +55,22 @@ const HacerBusqueda = async (
 
   async function busquedaConExp() {
    for (let i = 0; i < pestañas.length; i++) {
+    const anio = año[i % año.length];
     const pestaña = pestañas[i];
-    console.log('n° exp ', numeroExpediente);
-    promises.push(navegarYPersistirDatos(pestaña, juzgados, titular, exp, año));
+
+    promises.push(
+     navegarYPersistirDatos(pestaña, juzgados, titular, numeroExpediente, anio),
+    );
+   }
+  }
+
+  async function busquedaConAño() {
+   for (let i = 0; i < pestañas.length; i++) {
+    const pestaña = pestañas[i];
+    console.log('n° exp:', numeroExpediente);
+    promises.push(
+     navegarYPersistirDatos(pestaña, juzgados, titular, numeroExpediente, año),
+    );
    }
   }
 
@@ -180,7 +195,7 @@ function buildValidationName(nombre) {
   code += `)`;
  }
 
- //  console.log('code', code);
+ // console.log('code', code);
  return code;
 }
 
