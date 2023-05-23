@@ -2,19 +2,15 @@ const server = require('./src/app.js');
 require('dotenv').config();
 
 const port = process.env.PORT;
-// const { conn } = require('./src/db.js');
-// const { DB_PORT } = process.env;
-// const {
-//  adminSingIn,
-// } = require('./src/controllers/usersControllers/admin.controllers');
+const { db } = require('./src/db.js');
 
 // Syncing all the models at once.
-// conn.sync({ alter: true }).then(() => {
-console.log(port);
-server.listen(port, () => {
- console.log(`%s listening at ${port}`); // eslint-disable-line no-console
- server.get('/', (req, res) => {
-  res.sendFile(__dirname + '/src/utils/form.html');
+db.sync({ force: true }).then(() => {
+ console.log(port);
+ server.listen(port, () => {
+  console.log(`%s listening at ${port}`); // eslint-disable-line no-console
+  server.get('/', (req, res) => {
+   res.sendFile(__dirname + '/src/utils/form.html');
+  });
  });
 });
-// });

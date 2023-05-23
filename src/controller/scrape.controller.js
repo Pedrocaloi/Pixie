@@ -1,17 +1,111 @@
 const { juzgados, anios } = require('../utils/juzgados');
 const HacerBusqueda = require('../utils/bot.js');
+const { Parcela } = require('../db');
+const Json = require('../utils/prueba.json');
+
+// console.log('Objeto ', Parcelas);
+
+const Parcelas = [];
+
+Parcelas.push(Json);
+
+// const jsonString = fs.readFileSync('/utils/10.json', 'utf8');
+
+// const Parcelas = JSON.parse(jsonString);
 
 async function mapper(req, res) {
  const numeroExpediente = req.query.asunto;
  const anio = req.query.anio;
  const titular = req.query.nombre;
- const resultado = await GetExpedientes(
+
+ const resultadoScraping = await GetExpedientes(
   juzgados,
   titular,
   numeroExpediente,
   anio,
  );
- res.json({ response: resultado });
+
+ //  const resultadoDb = async () => {
+ //   try {
+ //    const createdParcelas = await Promise.all(
+ //     Parcelas.map(async (parcela) => {
+ //      console.log('toy en la parcela ', parcela.features);
+ //      const [createdParcela, created] = await Parcela.findOrCreate({
+ //       where: {
+ //        id: parcela.features.id,
+ //        OBJECTID: parcela.features.properties.OBJECTID,
+ //        RM: parcela.features.properties.RM,
+ //        MCN: parcela.features.properties.MCN,
+ //        LOTE: parcela.features.properties.LOTE,
+ //        CCAT: parcela.features.properties.CCAT,
+ //        NOF: parcela.features.properties.NOF,
+ //        OBSERVACIO: parcela.features.properties.OBSERVACIO,
+ //        USO: parcela.features.properties.USO,
+ //        OBS_CAMPO: parcela.features.properties.OBS_CAMPO,
+ //        MANZANA: parcela.features.properties.MANZANA,
+ //        FECHA_MOV: parcela.features.properties.FECHA_MOV,
+ //        MODIFICO: parcela.features.properties.MODIFICO,
+ //        CVE_CAT_ES: parcela.features.properties.CVE_CAT_ES,
+ //        SHAPE_AREA: parcela.features.properties.SHAPE_AREA,
+ //        SHAPE_LEN: parcela.features.properties.SHAPE_LEN,
+ //        PRKCCLAVEC: parcela.features.properties.PRKCCLAVE,
+ //        PROPIE: parcela.features.properties.PROPIE,
+ //        AREA: parcela.features.properties.AREA,
+ //        ESTADO: parcela.features.properties.ESTADO,
+ //        CVECATAS: parcela.features.properties.CVECATAS,
+ //        UBICACION: parcela.features.properties.UBICACION,
+ //        NUMOFI: parcela.features.properties.NUMOFI,
+ //        COLONIA: parcela.features.properties.COLONIA,
+ //        CP: parcela.features.properties.CP,
+ //        POBLACION: parcela.features.properties.POBLACION,
+ //        RAZONSOCIA: parcela.features.properties.RAZONSOCIA,
+ //        ESTADO_1: parcela.features.properties.ESTADO_1,
+ //        CVECATAS_1: parcela.features.properties.CVECATAS_1,
+ //        NOTIFICAR: parcela.features.properties.NOTIFICAR,
+ //        COL: parcela.features.properties.COL,
+ //        POB: parcela.features.properties.POB,
+ //        TIPOPR: parcela.features.properties.TIPOPR,
+ //        STATUSLEGA: parcela.features.properties.STATUSLEGA,
+ //        ANOTACION: parcela.features.properties.ANOTACION,
+ //        RPP: parcela.features.properties.RPP,
+ //        REGIMEN: parcela.features.properties.REGIMEN,
+ //        CVECATAS_2: parcela.features.properties.CVECATAS_2,
+ //        TERRENO: parcela.features.properties.TERRENO,
+ //        TOTAL: parcela.features.properties.TOTAL,
+ //        ESTADO_12: parcela.features.properties.ESTADO_12,
+ //        CVECATAS_3: parcela.features.properties.CVECATAS_3,
+ //        SUPERFICIE: parcela.features.properties.SUPERFICIE,
+ //        VTOTAL: parcela.features.properties.VTOTAL,
+ //        ESTADO_13: parcela.features.properties.ESTADO_13,
+ //        CVECATAS_4: parcela.features.properties.CVECATAS_4,
+ //        CONSTR: parcela.features.properties.CONSTR,
+ //        VALTOT: parcela.features.properties.VALTOT,
+ //        CVECATAS_5: parcela.features.properties.CVECATAS_5,
+ //        NUMREGPUB: parcela.features.properties.NUMREGPUB,
+ //        FECHAREGPU: parcela.features.properties.FECHAREGPU,
+ //        NUMESCRITU: parcela.features.properties.NUMESCRITU,
+ //        COORDINATES: parcela.features.geometry.coordinates,
+ //       },
+ //       defaults: parcela,
+ //      });
+
+ //      return createdParcela;
+ //     }),
+ //    );
+
+ //    res.status(200).json({
+ //     message: 'Parcelas creadas correctamente',
+ //     parcelas: createdParcelas,
+ //    });
+ //   } catch (error) {
+ //    console.error('Error al crear parcelas:', error);
+ //    res.status(500).json({ error: 'Error al crear parcelas' });
+ //   }
+ //  };
+ //  resultadoDb();
+ //  const resultado = resultadoScraping;
+ //  .concat(resultadoDb);
+ res.json({ response: resultadoScraping });
 }
 
 async function GetExpedientes(juzgado, titular, numeroExpediente, anio) {
@@ -112,7 +206,7 @@ async function busquedaConExp(juzgado, titular, numeroExpediente, check) {
  for (let index = 0; index < n.length; index++) {
   // n = anios[index];
   console.log('n° exp', numeroExpediente);
-  console.log('años ', n);
+  console.log('años ', n[index]);
   let response = await HacerBusqueda(
    juzgado,
    titular,
