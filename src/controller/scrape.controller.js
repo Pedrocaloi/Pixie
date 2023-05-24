@@ -18,13 +18,90 @@ async function mapper(req, res) {
  const anio = req.query.anio;
  const titular = req.query.nombre;
 
- const resultadoScraping = await GetExpedientes(
-  juzgados,
-  titular,
-  numeroExpediente,
-  anio,
- );
+ //  const resultadoScraping = await GetExpedientes(
+ //   juzgados,
+ //   titular,
+ //   numeroExpediente,
+ //   anio,
+ //  );
+ for (let i = 0; i < Json.features.length; i++) {
+  // const resultadoDb = async () => {
+  //  try {
+  console.log('Parcela n° ', Json.features[i].id);
+  const geometry = Json.features[i].geometry;
+  const type = geometry.type;
+  const coordinates = geometry.coordinates;
+  console.log('Geometry ', geometry);
+  console.log('Coordenadas ', coordinates);
+  await Parcela.create({
+   id: Json.features[i].id,
+   OBJECTID: Json.features[i].properties.OBJECTID,
+   RM: Json.features[i].properties.RM,
+   NCN: Json.features[i].properties.NCN,
+   LOTE: Json.features[i].properties.LOTE,
+   CCAT: Json.features[i].properties.CCAT,
+   NOF: Json.features[i].properties.NOF,
+   OBSERVACIO: Json.features[i].properties.OBSERVACIO,
+   USO: Json.features[i].properties.USO,
+   OBS_CAMPO: Json.features[i].properties.OBS_CAMPO,
+   MANZANA: Json.features[i].properties.MANZANA,
+   FECHA_MOV: Json.features[i].properties.FECHA_MOV,
+   MODIFICO: Json.features[i].properties.MODIFICO,
+   CVE_CAT_ES: Json.features[i].properties.CVE_CAT_ES,
+   SHAPE_AREA: Json.features[i].properties.SHAPE_AREA,
+   SHAPE_LEN: Json.features[i].properties.SHAPE_LEN,
+   PRKCCLAVEC: Json.features[i].properties.PRKCCLAVEC,
+   PROPIE: Json.features[i].properties.PROPIE,
+   AREA: Json.features[i].properties.AREA,
+   ESTADO: Json.features[i].properties.ESTADO,
+   CVECATAS: Json.features[i].properties.CVECATAS,
+   UBICACION: Json.features[i].properties.UBICACION,
+   NUMOFI: Json.features[i].properties.NUMOFI,
+   COLONIA: Json.features[i].properties.COLONIA,
+   CP: Json.features[i].properties.CP,
+   POBLACION: Json.features[i].properties.POBLACION,
+   RAZONSOCIA: Json.features[i].properties.RAZONSOCIA,
+   ESTADO_1: Json.features[i].properties.ESTADO_1,
+   CVECATAS_1: Json.features[i].properties.CVECATAS_1,
+   NOTIFICAR: Json.features[i].properties.NOTIFICAR,
+   COL: Json.features[i].properties.COL,
+   POB: Json.features[i].properties.POB,
+   TIPOPR: Json.features[i].properties.TIPOPR,
+   STATUSLEGA: Json.features[i].properties.STATUSLEGA,
+   ANOTACION: Json.features[i].properties.ANOTACION,
+   RPP: Json.features[i].properties.RPP,
+   REGIMEN: Json.features[i].properties.REGIMEN,
+   CVECATAS_2: Json.features[i].properties.CVECATAS_2,
+   TERRENO: Json.features[i].properties.TERRENO,
+   TOTAL: Json.features[i].properties.TOTAL,
+   ESTADO_12: Json.features[i].properties.ESTADO_12,
+   CVECATAS_3: Json.features[i].properties.CVECATAS_3,
+   SUPERFICIE: Json.features[i].properties.SUPERFICIE,
+   VTOTAL: Json.features[i].properties.VTOTAL,
+   ESTADO__13: Json.features[i].properties.ESTADO__13,
+   CVECATAS_4: Json.features[i].properties.CVECATAS_4,
+   CONSTR: Json.features[i].properties.CONSTR,
+   VALTOT: Json.features[i].properties.VALTOT,
+   CVECATAS_5: Json.features[i].properties.CVECATAS_5,
+   NUMREGPUB: Json.features[i].properties.NUMREGPUB,
+   FECHAREGPU: Json.features[i].properties.FECHAREGPU,
+   NUMESCRITU: Json.features[i].properties.NUMESCRITU,
 
+   // No anda
+   geometry: geometry,
+  });
+  //   res.status(200).json({
+  //    message: 'Parcelas creadas correctamente',
+  //    parcelas: resultadoDb,
+  //   });
+  //   return resultadoDb;
+  //  } catch (err) {
+  //   res
+  //    .status(500)
+  //    .send({ message: 'Error al cargar parcelas', info: resultadoDb });
+  //  }
+  // };
+ }
  //  const resultadoDb = async () => {
  //   try {
  //    const createdParcelas = await Promise.all(
@@ -105,7 +182,7 @@ async function mapper(req, res) {
  //  resultadoDb();
  //  const resultado = resultadoScraping;
  //  .concat(resultadoDb);
- res.json({ response: resultadoScraping });
+ //  res.json({ response: resultado });
 }
 
 async function GetExpedientes(juzgado, titular, numeroExpediente, anio) {
